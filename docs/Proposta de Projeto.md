@@ -84,27 +84,27 @@ Desenvolver uma plataforma web que permita ao gestor organizar, acompanhar e ana
 
 A solução deverá:
 
-- 1. Centralizar as atividades da equipe.
+1. Centralizar as atividades da equipe.
 
-- 2. Permitir atribuir responsabilidades.
+2. Permitir atribuir responsabilidades.
 
-- 3. Registrar prazos e prioridades.
+3. Registrar prazos e prioridades.
 
-- 4. Permitir acompanhar o estado de cada atividade.
+4. Permitir acompanhar o estado de cada atividade.
 
-- 5. Identificar atividades atrasadas ou próximas do vencimento.
+5. Identificar atividades atrasadas ou próximas do vencimento.
 
-- 6. Permitir visualizar a distribuição de trabalho entre os colaboradores.
+6. Permitir visualizar a distribuição de trabalho entre os colaboradores.
 
-- 7. Disponibilizar indicadores de desempenho operacional.
+7. Disponibilizar indicadores de desempenho operacional.
 
-- 8. Apresentar os indicadores de forma visual.
+8. Apresentar os indicadores de forma visual.
 
-- 9. Permitir filtrar informações por período, responsável e status.
+9. Permitir filtrar informações por período, responsável e status.
 
-- 10. Auxiliar o gestor na identificação antecipada de problemas.
+10. Auxiliar o gestor na identificação antecipada de problemas.
 
-- 11. Criar uma base histórica para comparação da evolução da equipe.
+11. Criar uma base histórica para comparação da evolução da equipe.
 
 ## 4. Requisitos funcionais obrigatórios
 
@@ -119,7 +119,6 @@ A implementação proposta adicionará os seguintes atributos às atividades:
 - título;
 
 - descrição;
-
 
 - responsável;
 
@@ -153,44 +152,44 @@ O gestor deverá visualizar indicadores que permitam compreender o estado da equ
 
 A proposta inicial é trabalhar com os seguintes indicadores:
 
-## 1. Atividades em andamento
+### 1. Atividades em andamento
 
 O que representa: quantidade de atividades atualmente em execução.
 
 Decisão: permite verificar o volume de trabalho ativo e identificar possíveis situações de excesso de atividades simultâneas.
 
-## 2. Atividades atrasadas
+### 2. Atividades atrasadas
 
 O que representa: atividades cujo prazo foi ultrapassado e que ainda não foram concluídas.
 
 
 Decisão: permite ao gestor identificar rapidamente onde existe risco operacional e priorizar ações de correção.
 
-## 3. Atividades próximas do vencimento
+### 3. Atividades próximas do vencimento
 
 O que representa: atividades cujo prazo está próximo.
 
 Decisão: permite atuar preventivamente antes que uma atividade se transforme em atraso.
 
-## 4. Taxa de conclusão
+### 4. Taxa de conclusão
 
 O que representa: proporção de atividades concluídas em determinado período.
 
 Decisão: permite acompanhar a capacidade de entrega da equipe ao longo do tempo.
 
-## 5. Distribuição de atividades por colaborador
+### 5. Distribuição de atividades por colaborador
 
 O que representa: quantidade de atividades atribuídas a cada membro da equipe.
 
 Decisão: permite identificar concentração de trabalho e possíveis desequilíbrios na distribuição das atividades.
 
-## 6. Tempo médio de conclusão
+### 6. Tempo médio de conclusão
 
 O que representa: tempo médio entre o início e a conclusão das atividades.
 
 Decisão: permite identificar mudanças na velocidade de execução e investigar processos que estejam demorando mais do que o esperado.
 
-## 7. Cumprimento de prazos
+### 7. Cumprimento de prazos
 
 O que representa: percentual de atividades concluídas dentro do prazo.
 
@@ -280,10 +279,7 @@ A listagem deverá apresentar:
 | --- | --- |
 | Atividade | Nome da atividade |
 | Responsável | Colaborador atribuído |
-
-
 | Status | Estado atual |
-| --- | --- |
 | Prioridade | Nível de prioridade |
 | Prazo | Data limite |
 | Situação | Normal, próxima do vencimento ou atrasada |
@@ -325,18 +321,11 @@ Como uma das referências apresentadas pelo desafio é o Kanban, a aplicação p
 
 A visualização seria organizada em colunas:
 
-| │ A FAZER | │ ANDAMENTO │ REVISÃO | │ CONCLUÍDO │ |
-| --- | --- | --- |
-
-
-| │ Atividade | │ Atividade │ Atividade | │ Atividade │ |   |
+| A FAZER | ANDAMENTO | REVISÃO | CONCLUÍDO |
 | --- | --- | --- | --- |
-| │ Atividade | │ Atividade │ | │ Atividade │ |   |
-| │ | │ Atividade │ | │ | │ |
-
-│
-
-│
+| Atividade | Atividade | Atividade | Atividade   |
+| Atividade | Atividade | Atividade |
+| Atividade |
 
 O usuário poderá mover uma atividade entre estados.
 
@@ -364,22 +353,15 @@ A tela também poderá apresentar um resumo individual:
 
 Colaborador: João
 
-Atividades abertas:
+Atividades abertas: 7
 
-Em andamento:
+Em andamento: 3
 
-Atrasadas:
+Atrasadas: 1
 
 Concluídas no período: 12
 
 Essas informações deverão ser utilizadas como instrumento de acompanhamento operacional, e não como avaliação isolada de produtividade.
-
-7
-
-3
-
-1
-
 
 ## 9. Alertas e prevenção de atrasos
 
@@ -414,7 +396,6 @@ Será utilizado para representar o fluxo operacional:
 A fazer → Em andamento → Em revisão → Concluído
 
 A principal vantagem é tornar o trabalho visível.
-
 
 ## Priorização
 
@@ -732,14 +713,14 @@ O gestor deverá conseguir abrir o sistema e responder rapidamente:
 
 Por isso, a página inicial deverá apresentar primeiro:
 
-- 1. situação geral;
+1. situação geral;
 
 
-- 2. problemas que exigem atenção;
+2. problemas que exigem atenção;
 
-- 3. distribuição do trabalho;
+3. distribuição do trabalho;
 
-- 4. evolução histórica.
+4. evolução histórica.
 
 A interface deverá evitar excesso de informações e gráficos sem finalidade operacional.
 
