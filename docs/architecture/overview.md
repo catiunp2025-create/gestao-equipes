@@ -1,5 +1,7 @@
 # Visão geral da arquitetura atual
 
+> Atualizado em: 2026-10-13
+
 ## Estrutura do repositório
 
 O projeto é um monorepo com pnpm workspaces e Turbo:
@@ -30,7 +32,7 @@ O workspace inclui `apps/*` e `packages/*`. O Turbo orquestra scripts de build, 
 
 ### Persistência
 
-O backend registra `PrismaRemoteRepository` pelo `DatabaseModule`; a classe estende `PrismaClient` e usa `PrismaPg`. O schema PostgreSQL atual contém somente `User`. A configuração Prisma aponta para caminhos antigos inexistentes; os detalhes estão em [database.md](./database.md).
+O backend registra `PrismaRemoteRepository` pelo `DatabaseModule`; a classe estende `PrismaClient` e usa `PrismaPg`. O schema PostgreSQL oficial está em `apps/api/prisma/schema.prisma` e contém somente `User`. `apps/api/prisma.config.ts` já aponta para esse schema e para `prisma/migrations`; a pasta de migrations será criada quando a primeira migration for gerada. Veja [database.md](./database.md).
 
 ## Fluxo efetivamente implementado
 

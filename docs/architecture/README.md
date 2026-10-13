@@ -1,5 +1,7 @@
 # Arquitetura
 
+> Atualizado em: 2026-10-13
+
 ## Objetivo
 
 Esta documentação registra a estrutura arquitetural que existe atualmente no repositório. Distingue código implementado, scaffolds provisórios, componentes apenas declarados e decisões que continuam em aberto. Não define a arquitetura final do backend.
@@ -40,14 +42,14 @@ Requisitos e conceitos de domínio podem descrever o produto desejado sem que su
 - frontend em React, TypeScript e Vite;
 - persistência declarada como PostgreSQL/Prisma;
 - `DatabaseModule` que registra e exporta `PrismaRemoteRepository`;
+- schema Prisma atual com o modelo `User`;
+- `prisma.config.ts` configurado para `prisma/schema.prisma` e `prisma/migrations`; a pasta de migrations será criada quando a primeira migration for gerada;
 - execução ESM no backend, com imports relativos emitidos com extensão `.js`.
 
 ### Declarado, provisório ou inconsistente
 
 - `@gestao-equipes/contracts` está declarado como pacote workspace, mas o arquivo `src/index.ts` indicado pelo seu `package.json` não existe;
-- API e Web ainda estão em scaffolds; funcionalidades do produto não estão implementadas;
-- o schema Prisma atual contém somente `User`;
-- `prisma.config.ts` aponta para caminhos de schema e migrations que não existem no estado atual.
+- API e Web ainda estão em scaffolds; funcionalidades do produto não estão implementadas.
 
 ### Decisões em aberto
 

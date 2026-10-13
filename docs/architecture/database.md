@@ -1,5 +1,7 @@
 # Persistência e banco de dados
 
+> Atualizado em: 2026-10-13
+
 ## Estado atual
 
 A API declara PostgreSQL e Prisma. A persistência está conectada ao Nest pelo `DatabaseModule`, que fornece e exporta `PrismaRemoteRepository`.
@@ -10,9 +12,9 @@ O `AppModule` importa `DatabaseModule`; no entanto, o `AppService` atual não in
 
 ## Schema e configuração Prisma
 
-O schema existente está em `apps/api/prisma/schema.prisma`. Ele configura o gerador `prisma-client-js`, declara PostgreSQL e contém atualmente somente o modelo `User` (`id`, `email`, `name`, `createdAt` e `updatedAt`).
+O schema oficial está em `apps/api/prisma/schema.prisma`. Ele configura o gerador `prisma-client-js`, declara PostgreSQL e contém atualmente somente o modelo `User` (`id`, `email`, `name`, `createdAt` e `updatedAt`).
 
-Há uma divergência objetiva a resolver antes de depender dos comandos Prisma: `apps/api/prisma.config.ts` ainda aponta `schema` para `src/prisma/schema.prisma` e migrations para `src/prisma/migrations`, mas esses caminhos não existem no estado atual. O schema encontrado está em `prisma/schema.prisma`, e não foi encontrada pasta de migrations. Esta consolidação registra a divergência sem mover arquivos ou alterar a configuração.
+`apps/api/prisma.config.ts` já aponta `schema` para `prisma/schema.prisma` e `migrations.path` para `prisma/migrations`, caminhos relativos ao pacote da API. O schema está presente. A pasta de migrations ainda não existe e será criada quando a primeira migration for gerada; sua ausência atual não é uma inconsistência na configuração.
 
 ## Limites do que está implementado
 
@@ -20,7 +22,6 @@ Os modelos de usuários, atividades, categorias, comentários, histórico e indi
 
 ## Pendências
 
-- Alinhar `prisma.config.ts` com o local real do schema e com a localização de migrations, antes de usar os comandos de geração ou migração.
-- Definir posteriormente como evoluir schema e migrations nos ambientes do projeto.
+- Definir posteriormente a estratégia de evolução e aplicação do schema e das migrations nos ambientes do projeto.
 - Decidir, durante a definição arquitetural do backend, se e onde abstrair o acesso Prisma.
 - Modelar persistência para os conceitos de negócio somente quando essas decisões forem implementadas.
