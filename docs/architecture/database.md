@@ -16,6 +16,8 @@ O schema oficial está em `apps/api/prisma/schema.prisma`. Ele configura o gerad
 
 `apps/api/prisma.config.ts` já aponta `schema` para `prisma/schema.prisma` e `migrations.path` para `prisma/migrations`, caminhos relativos ao pacote da API. O schema está presente. A pasta de migrations ainda não existe e será criada quando a primeira migration for gerada; sua ausência atual não é uma inconsistência na configuração.
 
+Para as implementações futuras, os contratos de repositório serão classes abstratas usadas como tokens de injeção, com implementações Prisma concretas. A organização e os limites dessa decisão estão descritos em [backend.md](./backend.md); assinaturas, transações e outros detalhes de persistência continuam em aberto.
+
 ## Limites do que está implementado
 
 Os modelos de usuários, atividades, categorias, comentários, histórico e indicadores descritos nos documentos de requisitos/domínio não estão materializados no schema Prisma atual. Da mesma forma, regras de integridade, índices, transações e estratégia de exclusão não devem ser interpretados como implementados apenas por constarem em documentação de produto ou propostas anteriores.
@@ -23,5 +25,5 @@ Os modelos de usuários, atividades, categorias, comentários, histórico e indi
 ## Pendências
 
 - Definir posteriormente a estratégia de evolução e aplicação do schema e das migrations nos ambientes do projeto.
-- Decidir, durante a definição arquitetural do backend, se e onde abstrair o acesso Prisma.
+- Definir assinaturas dos contratos, estratégias de transação e outros detalhes de persistência quando necessários.
 - Modelar persistência para os conceitos de negócio somente quando essas decisões forem implementadas.

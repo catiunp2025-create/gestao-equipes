@@ -34,6 +34,10 @@ O workspace inclui `apps/*` e `packages/*`. O Turbo orquestra scripts de build, 
 
 O backend registra `PrismaRemoteRepository` pelo `DatabaseModule`; a classe estende `PrismaClient` e usa `PrismaPg`. O schema PostgreSQL oficial está em `apps/api/prisma/schema.prisma` e contém somente `User`. `apps/api/prisma.config.ts` já aponta para esse schema e para `prisma/migrations`; a pasta de migrations será criada quando a primeira migration for gerada. Veja [database.md](./database.md).
 
+## Direção inicial do backend
+
+A API continuará em uma aplicação NestJS organizada como monólito modular por funcionalidades. `backend.md` registra a divisão funcional pretendida, a organização interna de referência e os limites acordados; isso orienta implementações futuras e não significa que os módulos já existam.
+
 ## Fluxo efetivamente implementado
 
 ```text
@@ -53,6 +57,7 @@ O `DatabaseModule` é carregado como parte da inicialização Nest, mas o fluxo 
 - **Implementado:** monorepo pnpm/Turbo; aplicações NestJS e React/Vite; bootstrap HTTP; provider Prisma registrado no Nest.
 - **Declarado, mas não materializado:** conteúdo exportado por `packages/contracts`; funcionalidades de produto e modelos de domínio além de `User`.
 - **Provisório:** controller/service de exemplo e organização mínima atual do backend.
-- **Em aberto:** arquitetura definitiva do backend, organização das features, abstrações de persistência e contratos API/Web.
+- **Decidido para implementações futuras:** monólito modular inicial, com responsabilidades por funcionalidade conforme [backend.md](./backend.md).
+- **Em aberto:** dependências e comunicação entre módulos, convenções finais, detalhes de persistência e contratos API/Web.
 
 Os documentos de requisitos e domínio continuam descrevendo o produto pretendido; eles não indicam que essas funcionalidades já estejam implementadas.

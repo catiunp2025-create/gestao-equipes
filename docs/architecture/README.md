@@ -28,7 +28,7 @@ Requisitos e conceitos de domínio podem descrever o produto desejado sem que su
 ## Documentos disponíveis
 
 - [overview.md](./overview.md): visão geral do monorepo e estado das aplicações.
-- [backend.md](./backend.md): estrutura NestJS, persistência registrada e build/runtime atuais.
+- [backend.md](./backend.md): estrutura NestJS e estado implementado, decisões iniciais para o backend e questões ainda em aberto.
 - [frontend.md](./frontend.md): scaffold web atual e propostas anteriormente registradas.
 - [database.md](./database.md): provider Prisma, schema e configuração existente.
 - [api.md](./api.md): endpoint e inicialização HTTP atuais.
@@ -53,14 +53,13 @@ Requisitos e conceitos de domínio podem descrever o produto desejado sem que su
 
 ### Decisões em aberto
 
-- arquitetura e organização definitivas do backend;
-- abstração futura do acesso à persistência;
+- política de dependências e comunicação entre módulos, convenções finais e detalhes de persistência do backend;
 - contratos HTTP e compartilhamento de tipos;
 - decisões de produto pendentes nos documentos de requisitos e domínio.
 
 ## Registro da arquitetura atual
 
-Os documentos descrevem o que existe hoje e tratam propostas anteriores como propostas, não como decisões já implementadas. A definição detalhada da arquitetura do backend fica para uma etapa posterior.
+Os documentos distinguem o que existe hoje das decisões que orientarão implementações futuras. Propostas anteriores são tratadas como referências, não como decisões já implementadas; as decisões iniciais de arquitetura do backend estão registradas em [backend.md](./backend.md).
 
 ## Leitura recomendada
 

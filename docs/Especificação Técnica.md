@@ -5,11 +5,12 @@
 - **Versão:** 2.0
 - **Status:** Especificação consolidada
 - **Fonte primária:** Especificação Técnica v1.0, consolidada com as decisões de produto e domínio posteriores
+- **Atualizado em:** 2026-10-13
 - **Nomenclatura oficial:** Atividade
 - **Backend:** NestJS + TypeScript + Prisma ORM + PostgreSQL
 - **Frontend:** React + TypeScript + Tailwind CSS + Recharts
 
-> **Nota sobre escopo técnico:** esta versão consolida o conteúdo da especificação técnica original e as decisões funcionais tomadas posteriormente. A arquitetura detalhada, os padrões de projeto, a organização definitiva dos módulos e outras decisões de implementação serão especificados posteriormente. As estruturas técnicas apresentadas neste documento são referências iniciais, não decisões arquiteturais definitivas.
+> **Nota sobre escopo técnico:** esta versão consolida o conteúdo da especificação técnica original e as decisões funcionais tomadas posteriormente. As decisões arquiteturais iniciais do backend estão registradas em [docs/architecture/backend.md](architecture/backend.md); questões ainda abertas e detalhes de implementação continuam pendentes. As estruturas técnicas apresentadas neste documento são referências iniciais, não afirmações sobre a implementação atual.
 
 ---
 
@@ -35,7 +36,7 @@ O objetivo é transformar a proposta de produto em uma referência para desenvol
 
 A especificação técnica original é a fonte primária deste documento. As decisões posteriores registradas durante a definição do produto foram incorporadas para eliminar ou atualizar regras que ficaram desatualizadas.
 
-A arquitetura detalhada e os padrões de projeto serão definidos posteriormente, a partir deste domínio consolidado.
+As decisões arquiteturais iniciais complementam este domínio consolidado sem alterar suas regras funcionais. Consulte a documentação de arquitetura para as decisões já acordadas e as que permanecem em aberto.
 
 ---
 
@@ -937,7 +938,7 @@ A arquitetura abaixo preserva a proposta da especificação original como refer�
 └───────────────────────────────┘
 ```
 
-Essa estrutura é uma referência inicial. A arquitetura definitiva será especificada posteriormente.
+Essa estrutura é uma visão conceitual de frontend, backend e persistência, não a arquitetura implementada. A divisão funcional inicial e seus limites estão registrados em [docs/architecture/backend.md](architecture/backend.md); decisões adicionais continuam em aberto.
 
 ---
 
@@ -957,6 +958,8 @@ src/
 ├── common/
 └── database/
 ```
+
+Este diagrama registra a proposta original, não a divisão funcional inicial atualmente acordada. Em particular, as informações de dashboard são responsabilidade de `indicators`, e o Kanban utiliza as operações de `activities`. Consulte [docs/architecture/backend.md](architecture/backend.md) para as decisões de referência.
 
 Responsabilidades conceituais:
 
@@ -1001,7 +1004,7 @@ Responsabilidades conceituais:
 
 - integração com persistência.
 
-A organização definitiva será decidida posteriormente.
+O diagrama e as responsabilidades acima são referências da proposta original, não módulos implementados. As decisões iniciais de organização estão registradas em [docs/architecture/backend.md](architecture/backend.md); elas não tornam obrigatórios todos os módulos ou componentes em cada funcionalidade.
 
 ---
 
@@ -1023,7 +1026,7 @@ Prisma
 PostgreSQL
 ```
 
-A definição detalhada de responsabilidades e padrões de projeto será feita posteriormente.
+As responsabilidades iniciais dos componentes estão documentadas em [docs/architecture/backend.md](architecture/backend.md). Detalhes adicionais e convenções finais continuam em aberto.
 
 ---
 
@@ -2251,7 +2254,7 @@ project/
 └── .env.example
 ```
 
-Esta estrutura é mantida como referência da especificação original. A organização definitiva do repositório será definida posteriormente.
+Esta estrutura é mantida como referência histórica da especificação original, não como estrutura atual do monorepo nem como decisão de implantação. A divisão funcional inicial do backend está documentada em [docs/architecture/backend.md](architecture/backend.md).
 
 ---
 
@@ -2371,7 +2374,7 @@ Não é necessário introduzir desde o primeiro momento:
 
 A arquitetura inicial deverá permanecer simples o suficiente para desenvolver, testar e demonstrar o produto.
 
-A decisão arquitetural definitiva será documentada posteriormente.
+As decisões arquiteturais iniciais estão documentadas em [docs/architecture/backend.md](architecture/backend.md). Elas mantêm o MVP simples e não encerram as questões arquiteturais ainda em aberto.
 
 ---
 
