@@ -12,9 +12,13 @@ O `AppModule` importa `DatabaseModule`; no entanto, o `AppService` atual não in
 
 ## Schema e configuração Prisma
 
-O schema oficial está em `apps/api/prisma/schema.prisma`. Ele configura o gerador `prisma-client-js`, declara PostgreSQL e contém atualmente somente o modelo `User` (`id`, `email`, `name`, `createdAt` e `updatedAt`).
+O schema oficial está em `apps/api/prisma/schema.prisma`. Ele configura o gerador `prisma-client-js`, declara PostgreSQL e define os enums `UserRole`, `ActivityStatus` e `ActivityPriority`, além dos modelos `User`, `Category` e `Activity`. Os identificadores e as chaves estrangeiras são declarados como `String` com `@db.Uuid`, alinhados ao tipo nativo `uuid` do PostgreSQL; e-mail de usuário e nome de categoria têm unicidade global.
 
 `apps/api/prisma.config.ts` já aponta `schema` para `prisma/schema.prisma` e `migrations.path` para `prisma/migrations`, caminhos relativos ao pacote da API. O schema está presente. A pasta de migrations ainda não existe e será criada quando a primeira migration for gerada; sua ausência atual não é uma inconsistência na configuração.
+
+`Activity.categoryId` é obrigatório e `Activity.assigneeId` é opcional. `Activity.dueDate` usa `DateTime? @db.Date` para persistir uma data civil PostgreSQL sem horário; embora o Prisma o represente como `DateTime` no TypeScript, conversões não devem deslocar o dia por fuso horário. `startedAt`, `completedAt`, `createdAt`, `updatedAt` e `archivedAt` representam data e hora. O schema inicial não contém `Comment`, nem índices adicionais ou políticas explícitas de cascata.
+
+O schema define estrutura e restrições declarativas, mas não implementa regras que dependem do estado de outras entidades: validar usuário ativo ao atribuir, validar categoria ativa ao criar ou mudar categoria, impedir exclusão física de usuários/categorias no fluxo normal e permitir exclusão definitiva de atividade somente após arquivamento são responsabilidades da aplicação. Desativar usuário não limpa atribuições existentes; categoria desativada continua relacionada às atividades; editar outros campos de atividade não exige trocar uma categoria que ficou inativa. O arquivamento usa `archivedAt` de forma independente do status, e a restrição de exclusão de atividade arquivada não deve ser simulada por uma constraint no banco.
 
 Para as implementações futuras, os contratos de repositório serão classes abstratas usadas como tokens de injeção, com implementações concretas responsáveis pelos detalhes de persistência em Prisma e PostgreSQL. Isso não significa que todos os contratos existentes já sejam independentes do Prisma: o provider atual expõe o cliente Prisma, e o grau de isolamento dos contratos será validado ao definir suas assinaturas. As decisões e orientações de persistência para implementações futuras estão registradas neste documento; a organização geral do backend está em [backend.md](./backend.md).
 
@@ -48,7 +52,7 @@ Para cada operação, os desenvolvedores deverão avaliar a documentação ofici
 
 ## Limites do que está implementado
 
-Os modelos de usuários, atividades, categorias, comentários, histórico e indicadores descritos nos documentos de requisitos/domínio não estão materializados no schema Prisma atual. Da mesma forma, regras de integridade, índices, transações e estratégia de exclusão não devem ser interpretados como implementados apenas por constarem em documentação de produto ou propostas anteriores.
+Os modelos iniciais de usuário, categoria e atividade estão definidos no schema Prisma, mas ainda não há migrations nem fluxos de negócio que os utilizem. Comentários, histórico e indicadores não fazem parte deste schema. Regras de integridade que dependem de operações da aplicação não devem ser consideradas implementadas apenas por constarem no schema ou na documentação.
 
 ## Pendências
 

@@ -1,5 +1,7 @@
 # Requisitos Funcionais
 
+> Atualizado em: 2026-10-14
+
 Fonte: `docs/Especificação Técnica.md`.
 
 ## Visão geral
@@ -61,6 +63,9 @@ O sistema deve permitir visualizar e administrar os usuários da equipe conforme
 - O MANAGER deve poder editar somente a si mesmo.
 - O MEMBER deve poder editar somente a si mesmo.
 - Usuários inativos não devem ser selecionáveis como novos responsáveis por atividades.
+- Desativar usuário não deve remover suas atribuições existentes.
+- E-mail deve permanecer único mesmo para usuários inativos.
+- O fluxo normal não deve permitir exclusão física de usuários.
 - As permissões operacionais devem ser respeitadas em todas as interfaces.
 
 ## RF03 — Atividades
@@ -75,7 +80,8 @@ O sistema deve permitir registrar e acompanhar as atividades da equipe, incluind
 - listar atividades;
 - visualizar atividade;
 - editar atividade;
-- excluir atividade;
+- excluir atividade arquivada;
+- arquivar e desarquivar atividade;
 - atribuir responsável;
 - alterar status;
 - alterar prioridade;
@@ -103,7 +109,10 @@ O sistema deve permitir registrar e acompanhar as atividades da equipe, incluind
 - A atividade deve possuir status.
 - A atividade deve poder possuir prazo.
 - A atividade deve poder ser editada pelo MANAGER.
-- A atividade deve poder ser excluída conforme permissão.
+- A atividade deve poder ser arquivada em qualquer status, sem alterar seu status.
+- Atividades arquivadas devem sair das visualizações operacionais e continuar consultáveis na área de arquivadas.
+- Desarquivar deve limpar `archivedAt`.
+- A atividade só deve poder ser excluída definitivamente quando estiver arquivada.
 - A atividade deve poder ser atribuída pelo MANAGER.
 - A atividade deve poder ser atribuída pelo MEMBER a si próprio quando aplicável.
 - A atividade deve poder ter prioridade alterada pelo MANAGER.
@@ -128,7 +137,6 @@ O sistema deve permitir organizar atividades por categorias.
 
 - criar categoria;
 - editar categoria;
-- excluir categoria;
 - ativar categoria;
 - desativar categoria;
 - listar categorias;
@@ -139,10 +147,12 @@ O sistema deve permitir organizar atividades por categorias.
 - O MANAGER deve poder criar categorias.
 - O MANAGER deve poder editar categorias.
 - O MANAGER deve poder ativar e desativar categorias.
-- O MANAGER deve poder excluir categorias sem atividades relacionadas.
-- Categoria relacionada a atividades não deve poder ser excluída.
 - Categoria desativada não deve poder ser usada em novas atividades.
+- Categoria desativada não deve poder ser escolhida ao criar atividade nem ao alterar sua categoria.
+- Editar outros campos de uma atividade não deve exigir a troca de uma categoria que se tornou inativa.
 - Atividades existentes devem continuar vinculadas a categorias desativadas.
+- O nome da categoria deve permanecer único mesmo quando inativa.
+- O fluxo normal não deve permitir exclusão física de categorias.
 
 ## RF05 — Kanban
 

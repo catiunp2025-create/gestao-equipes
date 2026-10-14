@@ -32,7 +32,7 @@ O workspace inclui `apps/*` e `packages/*`. O Turbo orquestra scripts de build, 
 
 ### Persistência
 
-O backend registra `PrismaRemoteRepository` pelo `DatabaseModule`; a classe estende `PrismaClient` e usa `PrismaPg`. O schema PostgreSQL oficial está em `apps/api/prisma/schema.prisma` e contém somente `User`. `apps/api/prisma.config.ts` já aponta para esse schema e para `prisma/migrations`; a pasta de migrations será criada quando a primeira migration for gerada. As decisões para futuras implementações de repositórios, transações e integridade também estão em [database.md](./database.md), sem representar componentes já implementados.
+O backend registra `PrismaRemoteRepository` pelo `DatabaseModule`; a classe estende `PrismaClient` e usa `PrismaPg`. O schema PostgreSQL oficial está em `apps/api/prisma/schema.prisma` e define `User`, `Category`, `Activity` e seus enums, mas ainda não há migrations nem fluxos de negócio que utilizem esses modelos. `apps/api/prisma.config.ts` já aponta para esse schema e para `prisma/migrations`; a pasta de migrations será criada quando a primeira migration for gerada. Os detalhes do modelo e as decisões de persistência estão em [database.md](./database.md).
 
 ## Direção inicial do backend
 
@@ -55,7 +55,7 @@ O `DatabaseModule` é carregado como parte da inicialização Nest, mas o fluxo 
 ## Classificação do estado
 
 - **Implementado:** monorepo pnpm/Turbo; aplicações NestJS e React/Vite; bootstrap HTTP; provider Prisma registrado no Nest.
-- **Declarado, mas não materializado:** conteúdo exportado por `packages/contracts`; funcionalidades de produto e modelos de domínio além de `User`.
+- **Declarado, mas não materializado:** conteúdo exportado por `packages/contracts`; funcionalidades de produto e fluxos de negócio que utilizem os modelos Prisma.
 - **Provisório:** controller/service de exemplo e organização mínima atual do backend.
 - **Decidido para implementações futuras:** monólito modular inicial, com responsabilidades por funcionalidade conforme [backend.md](./backend.md).
 - **Em aberto:** dependências e comunicação entre módulos, convenções finais e detalhes de implementação dos contratos e estratégias de persistência descritos em [database.md](./database.md), além dos contratos API/Web.

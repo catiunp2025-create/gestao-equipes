@@ -30,7 +30,7 @@ Requisitos e conceitos de domínio podem descrever o produto desejado sem que su
 - [overview.md](./overview.md): visão geral do monorepo e estado das aplicações.
 - [backend.md](./backend.md): estrutura NestJS e estado implementado, decisões iniciais para o backend e questões ainda em aberto.
 - [frontend.md](./frontend.md): scaffold web atual e propostas anteriormente registradas.
-- [database.md](./database.md): provider Prisma, schema e configuração existente, além dos padrões futuros de persistência e transações.
+- [database.md](./database.md): provider Prisma, schema e configuração existente, padrões de persistência, transações e modelo inicial de dados.
 - [api.md](./api.md): endpoint e inicialização HTTP atuais.
 
 ## Estado arquitetural consolidado
@@ -42,7 +42,7 @@ Requisitos e conceitos de domínio podem descrever o produto desejado sem que su
 - frontend em React, TypeScript e Vite;
 - persistência declarada como PostgreSQL/Prisma;
 - `DatabaseModule` que registra e exporta `PrismaRemoteRepository`;
-- schema Prisma atual com o modelo `User`;
+- schema Prisma com os modelos `User`, `Category` e `Activity`, e os enums de usuário, status e prioridade;
 - `prisma.config.ts` configurado para `prisma/schema.prisma` e `prisma/migrations`; a pasta de migrations será criada quando a primeira migration for gerada;
 - execução ESM no backend, com imports relativos emitidos com extensão `.js`.
 

@@ -6,11 +6,64 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum UserRole {
+  ADMIN
+  MANAGER
+  MEMBER
 }
 
+enum ActivityStatus {
+  TODO
+  IN_PROGRESS
+  REVIEW
+  DONE
+  CANCELLED
+}
+
+enum ActivityPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model User {
+  id                 String     @id @default(uuid()) @db.Uuid
+  name               String
+  email              String     @unique
+  passwordHash       String
+  role               UserRole   @default(MEMBER)
+  active             Boolean    @default(true)
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  assignedActivities Activity[]
+}
+
+model Category {
+  id          String     @id @default(uuid()) @db.Uuid
+  name        String     @unique
+  description String?
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  activities  Activity[]
+}
+
+model Activity {
+  id          String           @id @default(uuid()) @db.Uuid
+  title       String
+  description String?
+  status      ActivityStatus   @default(TODO)
+  priority    ActivityPriority @default(MEDIUM)
+  dueDate     DateTime?        @db.Date
+  startedAt   DateTime?
+  completedAt DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  archivedAt  DateTime?
+  assigneeId  String?          @db.Uuid
+  categoryId  String           @db.Uuid
+
+  assignee User?    @relation(fields: [assigneeId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+}

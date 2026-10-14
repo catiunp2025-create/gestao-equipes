@@ -1,5 +1,7 @@
 # Activities
 
+> Atualizado em: 2026-10-14
+
 ## Objetivo
 
 A Atividade é o conceito central do domínio da plataforma. Ela representa o trabalho que a equipe executa, o que precisa ser acompanhado, priorizado e concluído.
@@ -98,7 +100,15 @@ Regra de domínio:
 
 ### `dueDate`
 
-Representa o prazo de execução da atividade.
+Representa o prazo de execução da atividade como data civil, sem componente de horário.
+
+`startedAt`, `completedAt`, `createdAt`, `updatedAt` e `archivedAt` representam data e hora.
+
+## Arquivamento
+
+O arquivamento é independente do status da atividade e pode ocorrer em qualquer status. `archivedAt = null` significa que a atividade não está arquivada; uma data/hora preenchida registra o arquivamento. Arquivar não modifica o status.
+
+Atividades arquivadas saem das visualizações operacionais e continuam consultáveis na área de arquivadas. Desarquivar significa limpar `archivedAt`. A exclusão definitiva só é permitida para atividade arquivada, e essa condição deve ser aplicada pela aplicação, não por uma restrição no banco.
 
 ## Prazo e vencimento
 
@@ -155,9 +165,13 @@ A atividade deve possuir uma categoria válida.
 
 - categoria é obrigatória;
 - categoria inativa não pode ser usada em novas atividades;
+- categoria inativa não pode ser escolhida ao alterar a categoria de uma atividade existente;
+- editar outros campos não exige trocar uma categoria que se tornou inativa;
 - categorias desativadas permanecem vinculadas às atividades existentes.
 
 A relação entre atividade e categoria é parte central do domínio.
+
+O nome da categoria é único globalmente, inclusive quando está inativa.
 
 ## Comentários e revisão
 
@@ -172,7 +186,9 @@ Os requisitos mencionam comentários em atividades e revisão de atividade, mas 
 - ao sair de `DONE`, `completedAt` deve ser limpo;
 - quando a atividade entra pela primeira vez em `IN_PROGRESS`, `startedAt` é registrado;
 - o `startedAt` original não deve ser sobrescrito em novas entradas em `IN_PROGRESS` sem reinício explícito;
-- uma categoria desativada não pode ser usada em novas atividades;
+- arquivamento não altera o status da atividade;
+- uma categoria desativada não pode ser usada em novas atividades nem ao alterar a categoria;
+- atividades arquivadas só podem ser excluídas definitivamente pela aplicação.
 - uma atividade cancelada não deve ser considerada atrasada.
 
 ## Relações conceituais
@@ -199,7 +215,7 @@ Relacionado a:
 ## Decisões pendentes
 
 - valor exato da janela de alerta de prazo;
-- regra precisa para datas sem horário e timezone;
+- política de timezone para exibição e cálculos de negócio;
 - definição de comportamento de reinício explícito de atividade;
 - definição de modelo detalhado de comentário e revisão, quando aplicável.
 

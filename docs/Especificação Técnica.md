@@ -147,6 +147,8 @@ O sistema deverá permitir visualizar e administrar os usuários da equipe confo
 - status;
 - data de criação.
 
+Cargo/função permanece como referência de produto, mas não é um campo do schema Prisma inicial definido nesta especificação.
+
 ### Perfis
 
 - `ADMIN`;
@@ -183,7 +185,8 @@ O requisito corresponde diretamente à exigência funcional de registrar e acomp
 - categoria;
 - data de criação;
 - data de início;
-- data de conclusão.
+- data de conclusão;
+- data/hora de arquivamento, quando arquivada.
 
 ### Operações
 
@@ -191,7 +194,7 @@ O requisito corresponde diretamente à exigência funcional de registrar e acomp
 - listar atividades;
 - visualizar atividade;
 - editar atividade;
-- excluir atividade;
+- excluir atividade arquivada;
 - atribuir responsável;
 - alterar status;
 - alterar prioridade;
@@ -209,7 +212,6 @@ O sistema deverá permitir organizar atividades por categorias.
 
 - criar categoria;
 - editar categoria;
-- excluir categoria;
 - ativar categoria;
 - desativar categoria;
 - listar categorias;
@@ -284,7 +286,7 @@ Portanto, o ADMIN não pode:
 
 - criar atividades;
 - editar atividades;
-- excluir atividades;
+- excluir atividades arquivadas;
 - atribuir atividades;
 - alterar prioridade;
 - alterar status;
@@ -292,7 +294,6 @@ Portanto, o ADMIN não pode:
 - comentar atividades;
 - criar categorias;
 - editar categorias;
-- excluir categorias;
 - ativar categorias;
 - desativar categorias.
 
@@ -311,7 +312,7 @@ Pode:
 - editar apenas a si mesmo;
 - criar atividades;
 - editar atividades;
-- excluir atividades;
+- excluir atividades arquivadas;
 - atribuir atividades;
 - alterar prioridade;
 - alterar status;
@@ -319,7 +320,6 @@ Pode:
 - comentar atividades;
 - criar categorias;
 - editar categorias;
-- excluir categorias;
 - ativar categorias;
 - desativar categorias;
 - visualizar dashboard e indicadores.
@@ -349,7 +349,6 @@ O MEMBER não pode:
 - alterar atividades de outros usuários;
 - criar categorias;
 - editar categorias;
-- excluir categorias;
 - ativar categorias;
 - desativar categorias.
 
@@ -372,7 +371,7 @@ O MEMBER não pode:
 | Desativar MEMBER       |   Sim |     Sim |     Não |
 | Criar atividade        |   Não |     Sim |     Não |
 | Editar atividade       |   Não |     Sim |     Não |
-| Excluir atividade      |   Não |     Sim |     Não |
+| Excluir atividade arquivada | Não | Sim | Não |
 | Atribuir atividade     |   Não |     Sim | Própria |
 | Alterar prioridade     |   Não |     Sim |     Não |
 | Alterar status         |   Não |     Sim | Própria |
@@ -380,7 +379,6 @@ O MEMBER não pode:
 | Comentar atividade     |   Não |     Sim | Própria |
 | Criar categoria        |   Não |     Sim |     Não |
 | Editar categoria       |   Não |     Sim |     Não |
-| Excluir categoria      |   Não |     Sim |     Não |
 | Ativar categoria       |   Não |     Sim |     Não |
 | Desativar categoria    |   Não |     Sim |     Não |
 
@@ -597,6 +595,8 @@ Usuários inativos não deverão ser selecionáveis como novos responsáveis por
 
 Atividades históricas de usuários posteriormente desativados deverão permanecer preservadas.
 
+A desativação não desatribui automaticamente as atividades existentes. O e-mail permanece globalmente único inclusive para usuários inativos, e o fluxo normal da aplicação não permite exclusão física de usuários.
+
 ## RN07 — Categoria obrigatória
 
 Toda atividade deverá possuir uma categoria.
@@ -610,16 +610,15 @@ Uma categoria poderá ser desativada.
 Categorias desativadas:
 
 - não poderão ser selecionadas para novas atividades;
+- não poderão ser escolhidas ao alterar a categoria de uma atividade existente;
 - continuarão vinculadas às atividades existentes;
 - continuarão sendo exibidas nas atividades históricas.
 
-A desativação não deverá remover nem alterar os vínculos existentes.
+A desativação não deverá remover nem alterar os vínculos existentes. Editar outros campos de uma atividade não exige trocar uma categoria que se tornou inativa. O nome da categoria permanece globalmente único inclusive quando inativa.
 
-## RN09 — Exclusão de categoria
+## RN09 — Desativação de categoria
 
-Uma categoria não poderá ser excluída enquanto possuir atividades relacionadas.
-
-Quando não houver atividades relacionadas, a exclusão poderá ocorrer conforme a política de persistência definida posteriormente.
+Categorias são desativadas logicamente. O fluxo normal da aplicação não permite sua exclusão física, preservando os vínculos e o histórico das atividades.
 
 ## RN10 — Filtros
 
@@ -690,9 +689,7 @@ Categorias inativas:
 
 ## 9.3. Integridade
 
-Uma categoria relacionada a atividades não poderá ser excluída.
-
-A implementação deverá preservar o histórico das atividades.
+O nome da categoria é globalmente único, inclusive para categorias inativas. Categorias são desativadas logicamente e não são excluídas fisicamente pelo fluxo normal. Uma atividade deve possuir uma categoria; a aplicação valida se ela está ativa ao criar a atividade ou alterar sua categoria, sem exigir a troca em edições de outros campos. Os vínculos existentes são preservados quando a categoria é desativada.
 
 ---
 
@@ -1060,6 +1057,7 @@ Activity
 ├── completedAt
 ├── createdAt
 ├── updatedAt
+├── archivedAt
 ├── assigneeId
 └── categoryId
 ```
@@ -1076,11 +1074,7 @@ Category
 └── updatedAt
 ```
 
-## Comment
-
-O domínio de comentários exige persistência associada à atividade e ao usuário autor.
-
-A estrutura definitiva será especificada junto do modelo de dados arquitetural.
+Comentários continuam descritos como funcionalidade de produto, mas não fazem parte do schema desta versão.
 
 ---
 
@@ -1089,37 +1083,35 @@ A estrutura definitiva será especificada junto do modelo de dados arquitetural.
 ```text
 User
   │
-  │ 1:N
+  │ (responsável opcional; usuário pode ter várias atividades atribuídas)
   ▼
 Activity
   │
-  │ N:1
+  │ N:1 (categoria obrigatória)
   ▼
 Category
-
-Activity
-  │
-  │ 1:N
-  ▼
-Comment
-  ▲
-  │ N:1
-User
 ```
 
 - Um usuário poderá possuir várias atividades como responsável.
-- Uma atividade poderá possuir um usuário responsável.
+- Uma atividade poderá possuir um usuário responsável ou nenhum.
 - Uma categoria poderá possuir várias atividades.
-- Uma atividade poderá possuir vários comentários.
-- Um usuário poderá criar vários comentários.
+- Toda atividade deverá possuir uma categoria.
 
 ---
 
-# 19. Modelo Prisma conceitual
+# 19. Modelo Prisma inicial
 
-O modelo abaixo mantém a proposta da especificação original, adaptada para a nomenclatura oficial de Atividade e para as novas regras de categoria.
+O schema `apps/api/prisma/schema.prisma` estabelece os enums e modelos iniciais aprovados. `dueDate` representa uma data civil e é armazenado como `DATE`; os demais campos temporais representam data e hora. O modelo não inclui comentários nem índices adicionais.
 
 ```prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
 enum UserRole {
   ADMIN
   MANAGER
@@ -1142,72 +1134,56 @@ enum ActivityPriority {
 }
 
 model User {
-  id           String   @id @default(uuid())
-  name         String
-  email        String   @unique
-  passwordHash String
-  role         UserRole @default(MEMBER)
-  active       Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  activities Activity[]
-  comments   Comment[]
+  id                 String     @id @default(uuid()) @db.Uuid
+  name               String
+  email              String     @unique
+  passwordHash       String
+  role               UserRole   @default(MEMBER)
+  active             Boolean    @default(true)
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  assignedActivities Activity[]
 }
 
 model Category {
-  id          String     @id @default(uuid())
+  id          String     @id @default(uuid()) @db.Uuid
   name        String     @unique
   description String?
   active      Boolean    @default(true)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-
-  activities Activity[]
+  activities  Activity[]
 }
 
 model Activity {
-  id          String           @id @default(uuid())
+  id          String           @id @default(uuid()) @db.Uuid
   title       String
   description String?
   status      ActivityStatus   @default(TODO)
   priority    ActivityPriority @default(MEDIUM)
-  dueDate     DateTime?
+  dueDate     DateTime?        @db.Date
   startedAt   DateTime?
   completedAt DateTime?
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
-  assigneeId  String?
-  categoryId  String
+  archivedAt  DateTime?
+  assigneeId  String?          @db.Uuid
+  categoryId  String           @db.Uuid
 
   assignee User?    @relation(fields: [assigneeId], references: [id])
   category Category @relation(fields: [categoryId], references: [id])
-  comments Comment[]
-
-  @@index([assigneeId])
-  @@index([status])
-  @@index([priority])
-  @@index([dueDate])
-  @@index([categoryId])
-}
-
-model Comment {
-  id         String   @id @default(uuid())
-  content    String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  activityId String
-  authorId   String
-
-  activity Activity @relation(fields: [activityId], references: [id])
-  author   User     @relation(fields: [authorId], references: [id])
-
-  @@index([activityId])
-  @@index([authorId])
 }
 ```
 
-> O schema acima é um modelo conceitual atualizado, não uma decisão definitiva de implementação. Relações, índices, estratégias de exclusão e detalhes de persistência serão validados durante a implementação, à luz dos padrões em [docs/architecture/database.md](architecture/database.md).
+`startedAt` registra a primeira entrada em `IN_PROGRESS` sem ser sobrescrito em transições posteriores; ao entrar em `DONE`, `completedAt` recebe o instante atual, é limpo ao sair de `DONE` ou ao entrar em `CANCELLED`, e é registrado novamente em uma nova conclusão. `CANCELLED` é terminal. O arquivamento é independente do status: `archivedAt = null` significa não arquivada e uma data/hora significa arquivada; arquivar não altera o status.
+
+Atividades arquivadas deixam as visualizações operacionais, mas continuam consultáveis na área de arquivadas. Desarquivar limpa `archivedAt`. A exclusão definitiva de uma atividade só é permitida quando ela está arquivada; essa condição será aplicada pela aplicação, não por uma restrição do banco. O schema não define políticas explícitas de cascata, nem regras que dependam do estado de outras entidades.
+
+O Prisma representa `dueDate` no TypeScript como `DateTime`, mesmo com a coluna PostgreSQL `DATE`. O código deverá tratá-lo como data civil e evitar conversões que provoquem deslocamento de dia por fuso horário. Os demais campos temporais (`startedAt`, `completedAt`, `createdAt`, `updatedAt` e `archivedAt`) são data/hora.
+
+Os nomes das relações inversas são `User.assignedActivities` e `Category.activities`. O e-mail e o nome da categoria são globalmente únicos, inclusive quando a entidade está inativa. Usuários não são excluídos fisicamente pelo fluxo normal; desativá-los não remove nem altera suas atribuições históricas. Categorias também são desativadas logicamente, sem exclusão física pelo fluxo normal.
+
+Veja [docs/architecture/database.md](architecture/database.md) para os limites entre o schema implementado e as regras que cabem à aplicação.
 
 ---
 
@@ -1949,7 +1925,9 @@ Uma atividade será considerada implementada quando:
 - possuir status;
 - puder possuir prazo;
 - puder ser editada pelo MANAGER;
-- puder ser excluída conforme permissão;
+- puder ser arquivada em qualquer status sem alterar seu status;
+- puder ser desarquivada limpando `archivedAt`;
+- só puder ser excluída definitivamente depois de arquivada, com a condição aplicada pela aplicação;
 - puder ser atribuída pelo MANAGER;
 - puder ser atribuída pelo MEMBER a si próprio quando permitido;
 - puder ter prioridade alterada pelo MANAGER;
@@ -1973,9 +1951,9 @@ Categorias serão consideradas implementadas quando:
 - MANAGER puder criar categorias;
 - MANAGER puder editar categorias;
 - MANAGER puder ativar/desativar categorias;
-- MANAGER puder excluir categorias sem atividades relacionadas;
-- categoria relacionada a atividades não puder ser excluída;
-- categoria desativada não puder ser usada em novas atividades;
+- categoria não puder ser excluída fisicamente pelo fluxo normal;
+- categoria inativa não puder ser usada ao criar atividade ou alterar sua categoria;
+- edição de outros campos não exigir a troca de uma categoria inativa;
 - atividades existentes continuarem vinculadas a categorias desativadas.
 
 ---
@@ -2291,14 +2269,12 @@ As decisões abaixo não são fechadas por esta especificação e deverão ser t
 
 - quantidade exata de dias da janela de alerta;
 - tratamento de finais de semana;
-- timezone;
-- comportamento de datas sem horário.
+- políticas de timezone para exibição e cálculos de negócio.
 
 ## Exclusão
 
-- exclusão física ou soft delete de atividades;
-- política definitiva de exclusão de usuários;
-- política definitiva de exclusão de categorias sem vínculos.
+- os fluxos normais não excluem fisicamente usuários ou categorias;
+- a exclusão definitiva de atividade só é permitida depois do arquivamento e é validada pela aplicação.
 
 ## Dashboard
 

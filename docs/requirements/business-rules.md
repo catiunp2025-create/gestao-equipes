@@ -1,5 +1,7 @@
 # Regras de Negócio
 
+> Atualizado em: 2026-10-14
+
 Fonte: `docs/Especificação Técnica.md`.
 
 ## 1. Regras gerais
@@ -70,6 +72,8 @@ Usuários inativos não devem ser selecionáveis como novos responsáveis por at
 
 Atividades históricas de usuários posteriormente desativados devem permanecer preservadas.
 
+Desativar um usuário não desatribui automaticamente suas atividades. O e-mail permanece globalmente único mesmo para usuários inativos, e o fluxo normal não permite exclusão física de usuários.
+
 ### RN07 — Categoria obrigatória
 
 Toda atividade deve possuir uma categoria.
@@ -83,16 +87,16 @@ Uma categoria pode ser desativada.
 Categorias desativadas:
 
 - não podem ser selecionadas para novas atividades;
+- não podem ser selecionadas ao alterar a categoria de uma atividade existente;
 - continuam vinculadas às atividades existentes;
 - continuam sendo exibidas nas atividades históricas.
 
 A desativação não deve remover nem alterar os vínculos existentes.
+Editar outros campos de uma atividade não exige trocar uma categoria que se tornou inativa. O nome da categoria permanece globalmente único mesmo quando inativa.
 
-### RN09 — Exclusão de categoria
+### RN09 — Desativação de categoria
 
-Uma categoria não pode ser excluída enquanto possuir atividades relacionadas.
-
-Quando não houver atividades relacionadas, a exclusão pode ocorrer conforme a política de persistência definida posteriormente.
+Categorias são desativadas logicamente e não são excluídas fisicamente pelo fluxo normal, preservando os vínculos e o histórico das atividades.
 
 ### RN10 — Filtros
 
@@ -134,6 +138,14 @@ Os indicadores devem utilizar a data relevante para o fenômeno que está sendo 
 | Prazo | `dueDate` |
 | Tempo de execução | `startedAt` e `completedAt` |
 
+### Arquivamento de atividades
+
+- `archivedAt = null` representa atividade não arquivada; valor preenchido representa atividade arquivada.
+- Uma atividade pode ser arquivada em qualquer status, sem alteração do status.
+- Atividades arquivadas saem das visualizações operacionais e permanecem consultáveis na área de arquivadas.
+- Desarquivar limpa `archivedAt`.
+- A exclusão definitiva só é permitida depois do arquivamento; a aplicação valida essa condição.
+
 A mesma atividade pode participar de análises diferentes usando datas diferentes.
 
 ## 2. Autenticação
@@ -154,6 +166,7 @@ A mesma atividade pode participar de análises diferentes usando datas diferente
 ## 3. Usuários
 
 - O usuário possui dados como nome, e-mail, cargo/função, perfil, status e data de criação.
+- Cargo/função permanece como referência de produto, mas não é um campo do schema Prisma inicial.
 - Os perfis disponíveis são `ADMIN`, `MANAGER` e `MEMBER`.
 - Usuários inativos não podem ser selecionados como novos responsáveis.
 - Atividades históricas devem permanecer preservadas mesmo após desativação do usuário.
@@ -279,10 +292,13 @@ A janela de alerta deve ser configurável.
 ## 5. Categorias
 
 - As categorias são utilizadas para classificar atividades.
-- O MANAGER pode criar, editar, excluir, ativar e desativar categorias.
+- O MANAGER pode criar, editar, ativar e desativar categorias.
 - Categorias inativas não podem ser utilizadas em novas atividades.
 - Categorias inativas continuam vinculadas às atividades existentes.
-- Uma categoria relacionada a atividades não pode ser excluída.
+- O fluxo normal desativa categorias logicamente e não permite exclusão física.
+- Categorias inativas não podem ser usadas ao criar atividade ou alterar sua categoria.
+- Editar outros campos da atividade não exige trocar uma categoria que se tornou inativa.
+- O nome da categoria permanece único mesmo quando inativa.
 - A implementação deve preservar o histórico das atividades.
 - A desativação não deve remover nem alterar os vínculos existentes.
 

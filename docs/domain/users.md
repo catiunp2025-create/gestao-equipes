@@ -1,5 +1,7 @@
 # Users
 
+> Atualizado em: 2026-10-14
+
 ## Objetivo
 
 Este documento descreve o conceito de usuário no domínio da plataforma, seus perfis, seu ciclo de vida e a forma como ele se relaciona com atividades e permissões.
@@ -14,10 +16,11 @@ Informações conceituais relevantes definidas pela especificação:
 
 - nome;
 - e-mail;
-- cargo/função;
 - perfil;
 - status;
 - data de criação.
+
+Cargo/função permanece como referência de produto, mas não é um campo do schema Prisma inicial.
 
 ### Perfil/Papel
 
@@ -50,8 +53,12 @@ O usuário possui estado de atividade:
 
 - usuários inativos não podem realizar login;
 - usuários inativos não devem ser selecionáveis como novos responsáveis por atividades;
+- o e-mail permanece globalmente único mesmo para usuários inativos;
 - atividades históricas de usuários desativados devem permanecer preservadas;
-- a desativação não deve invalidar o histórico da atividade ou da relação anterior.
+- a desativação não deve invalidar o histórico da atividade ou da relação anterior;
+- desativar um usuário não desatribui automaticamente suas atividades.
+
+O fluxo normal da aplicação não permite exclusão física de usuários.
 
 ## Ciclo de vida do usuário
 
@@ -103,14 +110,15 @@ A autenticação depende da experiência de login de um usuário ativo. O estado
 
 - usuário inativo não pode realizar login;
 - usuário inativo não pode ser selecionado como novo responsável para atividades;
+- e-mail de usuário é globalmente único, mesmo quando inativo;
 - histórico de atividades de usuários desativados deve ser preservado;
+- desativação não altera atribuições existentes;
 - a identidade do usuário persiste mesmo quando seu status de acesso muda.
 
 ## Decisões pendentes
 
 Algumas questões relacionadas a usuário não foram fechadas pela especificação de produto, e devem permanecer explícitas:
 
-- detalhes de política de exclusão de usuários;
 - política definitiva de múltiplas sessões e assinatura de usuário;
 - comportamentos de acessos específicos que dependam de arquitetura.
 

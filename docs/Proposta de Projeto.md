@@ -1,5 +1,7 @@
 ## Proposta de Projeto
 
+**Atualizado em:** 2026-10-14
+
 ## Plataforma de Gestão de Atividades e Indicadores de Equipe
 
 ## 1. Visão geral
@@ -538,60 +540,52 @@ Será utilizado para construção dos gráficos do dashboard, incluindo:
 
 ## 14. Modelo de dados inicial
 
-Uma estrutura inicial de domínio poderá ser composta por:
+O modelo aprovado utiliza identificadores e nomes Prisma em inglês. As entidades e os campos essenciais são:
 
+```text
 User
-
-├── id
-
+├── id (UUID)
 ├── name
-
-├── email
-
-├── role
-
-└── createdAt
-
-Task
-
-├── id
-
-├── title
-
-├── description
-
-├── status
-
-├── priority
-
-├── dueDate
-
-
-├── startedAt
-
-├── completedAt
-
+├── email (único)
+├── passwordHash
+├── role (ADMIN, MANAGER ou MEMBER; padrão MEMBER)
+├── active (padrão true)
 ├── createdAt
-
 ├── updatedAt
-
-└── assigneeId
+└── assignedActivities
 
 Category
+├── id (UUID)
+├── name (único)
+├── description (opcional)
+├── active (padrão true)
+├── createdAt
+├── updatedAt
+└── activities
 
-├── id
+Activity
+├── id (UUID)
+├── title
+├── description (opcional)
+├── status (TODO, IN_PROGRESS, REVIEW, DONE ou CANCELLED; padrão TODO)
+├── priority (LOW, MEDIUM, HIGH ou CRITICAL; padrão MEDIUM)
+├── dueDate (data civil opcional)
+├── startedAt
+├── completedAt
+├── createdAt
+├── updatedAt
+├── archivedAt (opcional)
+├── assigneeId (opcional)
+└── categoryId (obrigatório)
+```
 
-├── name
+Um usuário pode ser responsável por várias atividades; uma atividade pode não ter responsável. Toda atividade pertence a uma categoria. O modelo e seus enums usam nomenclatura alinhada a `Activity`.
 
-└── description
+Usuários e categorias inativos permanecem relacionados às atividades históricas, e seus e-mails e nomes continuam únicos. A desativação não desatribui atividades; categorias inativas não podem ser escolhidas ao criar atividade ou alterar sua categoria, mas editar outros campos não exige trocar a categoria existente. O fluxo normal não exclui fisicamente usuários nem categorias.
 
-Relacionamentos:
+O arquivamento da atividade é independente do status. `archivedAt = null` indica atividade não arquivada; preenchido indica arquivada. Atividades arquivadas saem das visualizações operacionais e continuam acessíveis na área de arquivadas. A exclusão definitiva só é permitida após arquivamento, com a condição aplicada pela aplicação.
 
-User 1 ───────── N Task
-
-Category 1 ──── N Task
-
-Esse modelo é apenas a base inicial. A modelagem definitiva deverá ser determinada durante a análise dos requisitos e da implementação.
+O modelo Prisma atual e os detalhes de persistência estão documentados em [docs/architecture/database.md](architecture/database.md). Comentários continuam como requisito de produto, mas não fazem parte do schema inicial.
 
 ## 15. API
 
@@ -624,33 +618,31 @@ POST
 
 PATCH /users/:id
 
-DELETE /users/:id
-
 ## Atividades
 
 GET
 
-/tasks
+/activities
 
 GET
 
-/tasks/:id
+/activities/:id
 
 POST
 
-/tasks
+/activities
 
-PATCH /tasks/:id
+PATCH /activities/:id
 
-DELETE /tasks/:id
+DELETE /activities/:id (somente após arquivamento)
 
 ## Dashboard
 
 GET /dashboard/summary
 
-GET /dashboard/tasks-by-user
+GET /dashboard/activities-by-user
 
-GET /dashboard/tasks-over-time
+GET /dashboard/activities-over-time
 
 GET /dashboard/deadlines
 

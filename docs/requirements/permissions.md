@@ -1,5 +1,7 @@
 # Permissões
 
+> Atualizado em: 2026-10-14
+
 Fonte: `docs/Especificação Técnica.md`.
 
 ## 1. Perfis
@@ -32,7 +34,7 @@ Os três perfis possuem responsabilidades distintas:
 
 - criar atividades;
 - editar atividades;
-- excluir atividades;
+- excluir atividades arquivadas;
 - atribuir atividades;
 - alterar prioridade;
 - alterar status;
@@ -40,7 +42,6 @@ Os três perfis possuem responsabilidades distintas:
 - comentar atividades;
 - criar categorias;
 - editar categorias;
-- excluir categorias;
 - ativar categorias;
 - desativar categorias.
 
@@ -55,7 +56,7 @@ Os três perfis possuem responsabilidades distintas:
 - editar apenas a si mesmo;
 - criar atividades;
 - editar atividades;
-- excluir atividades;
+- excluir atividades arquivadas;
 - atribuir atividades;
 - alterar prioridade;
 - alterar status;
@@ -63,7 +64,6 @@ Os três perfis possuem responsabilidades distintas:
 - comentar atividades;
 - criar categorias;
 - editar categorias;
-- excluir categorias;
 - ativar categorias;
 - desativar categorias;
 - visualizar dashboard e indicadores.
@@ -87,13 +87,12 @@ Os três perfis possuem responsabilidades distintas:
 
 - criar atividades;
 - editar atividades;
-- excluir atividades;
+- excluir atividades arquivadas;
 - alterar prioridade;
 - revisar atividades;
 - alterar atividades de outros usuários;
 - criar categorias;
 - editar categorias;
-- excluir categorias;
 - ativar categorias;
 - desativar categorias.
 
@@ -114,7 +113,7 @@ Os três perfis possuem responsabilidades distintas:
 | Desativar MEMBER | Sim | Sim | Não |
 | Criar atividade | Não | Sim | Não |
 | Editar atividade | Não | Sim | Não |
-| Excluir atividade | Não | Sim | Não |
+| Excluir atividade arquivada | Não | Sim | Não |
 | Atribuir atividade | Não | Sim | Própria |
 | Alterar prioridade | Não | Sim | Não |
 | Alterar status | Não | Sim | Própria |
@@ -122,7 +121,6 @@ Os três perfis possuem responsabilidades distintas:
 | Comentar atividade | Não | Sim | Própria |
 | Criar categoria | Não | Sim | Não |
 | Editar categoria | Não | Sim | Não |
-| Excluir categoria | Não | Sim | Não |
 | Ativar categoria | Não | Sim | Não |
 | Desativar categoria | Não | Sim | Não |
 
