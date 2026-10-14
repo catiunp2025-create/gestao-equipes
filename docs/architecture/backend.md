@@ -1,6 +1,6 @@
 # Backend
 
-> Atualizado em: 2026-10-13
+> Atualizado em: 2026-10-14
 
 ## Estado atual
 
@@ -107,14 +107,29 @@ Como critério de revisão, a estrutura deve permitir localizar, compreender e t
 
 ### Contratos e limites de responsabilidade
 
-O contrato de cada repositório será definido por uma **classe abstrata**, usada também como token de injeção de dependência no NestJS. A aplicação depende desse contrato e a implementação Prisma fornece a persistência concreta. Assinaturas de métodos, estratégia de transações e outros detalhes não estão definidos aqui.
+O contrato de cada repositório será definido por uma **classe abstrata**, usada também como token de injeção de dependência no NestJS. A implementação concreta fornece a persistência, atualmente com Prisma e PostgreSQL. Essa decisão não afirma independência completa do Prisma em todos os contratos. A quantidade e especialização de repositórios, limites de módulos, transações e integridade estão detalhados em [database.md](./database.md).
 
 - Controllers não concentram regras de negócio.
 - Implementações Prisma não decidem permissões nem centralizam regras de domínio.
-- Casos de uso dependem dos contratos necessários, sem acoplamento direto à implementação Prisma.
+- Casos de uso futuros dependem dos contratos necessários, sem acessar diretamente as implementações Prisma.
+- Outros módulos consomem capacidades públicas do módulo proprietário por meio de seus casos de uso públicos, não por acesso direto aos repositórios ou às implementações Prisma.
 - Regras específicas de uma operação podem permanecer no caso de uso correspondente; regras reutilizadas devem ser isoladas explicitamente e de forma proporcional à sua complexidade.
 - A mesma lógica de negócio não deve ser duplicada entre diferentes formas de interação com a API, incluindo as operações consumidas pelo Kanban.
 - Abstrações e camadas são introduzidas quando houver responsabilidade real a separar; não se impõe uma estrutura integral de Clean Architecture por convenção.
+
+### Padrão de erros e exceções
+
+O padrão inicial de erros prioriza uma estrutura explícita e fácil de compreender. Erros compartilhados serão organizados conceitualmente em `common/errors/base/` como classes-base HTTP que centralizam o status HTTP e a estrutura comum da resposta, utilizando as exceções do NestJS. Exemplos de categorias incluem `NotFoundError`, `BadRequestError`, `ConflictError` e `ForbiddenError`; a lista é ilustrativa, e só devem ser implementados os tipos necessários.
+
+Cada módulo manterá próximos de sua responsabilidade os erros específicos que representem condições relevantes da aplicação. Por exemplo, `users` poderá definir `UserNotFound`, derivado de `NotFoundError`, com mensagem legível como `Usuário não encontrado` e identificador estável como `api/user_not_found`. Mensagens destinadas à leitura e identificadores destinados ao reconhecimento por consumidores são conceitos distintos; quando exposto na resposta, o identificador deve estar em campo próprio, conforme o contrato HTTP definido para a API. O formato padronizado poderá incluir `statusCode`, `message` e `error`; a documentação Swagger poderá descrevê-lo quando necessário para os contratos dos endpoints.
+
+Esses nomes e diretórios são referências conceituais, não arquivos existentes nem uma convenção obrigatória de nomenclatura. A organização deve acompanhar as necessidades reais do módulo, sem estruturas vazias ou arquivos separados sem justificativa. Evitam-se erros genéricos que ocultem a condição real e hierarquias extensas sem necessidade. Erros específicos não devem ser concentrados em `common`. O mecanismo de erros não substitui validações de entrada, regras de negócio ou tratamento adequado das falhas de persistência.
+
+As classes-base utilizarão exceções HTTP do NestJS, por exemplo `NotFoundException`; erros específicos poderão herdá-las indiretamente. Assim, casos de uso que lançarem esses erros estarão indiretamente acoplados ao NestJS e ao modelo de exceções HTTP. Esse acoplamento é aceito conscientemente na arquitetura atual em benefício da simplicidade didática; os casos de uso não precisam implementar tradução própria, e não se prevê uma camada centralizada de tradução nesta etapa.
+
+A implementação deverá considerar como tratar erros conhecidos do Prisma e outras falhas técnicas sem expor detalhes internos desnecessários ao consumidor. O mapeamento específico dessas falhas permanece por definir conforme as necessidades concretas.
+
+Como possibilidade futura, o projeto poderá separar erros da aplicação independentes do NestJS/HTTP, exceções HTTP que representam esses erros na API e um mecanismo centralizado de tradução entre ambos. Essa separação reduziria o acoplamento dos casos de uso, mas introduziria complexidade adicional. Sua adoção poderá ser reavaliada conforme o amadurecimento do projeto, a manutenção e os benefícios concretos; não é uma obrigação nem uma refatoração programada. Não serão antecipados erros independentes de HTTP, filtros globais ou mecanismos de mapeamento apenas para preparar essa possibilidade.
 
 ## Estado experimental e decisões em aberto
 
@@ -122,6 +137,7 @@ O contrato de cada repositório será definido por uma **classe abstrata**, usad
 - Política completa de dependências e comunicação entre módulos, incluindo importação de componentes internos e exposição de contratos entre módulos.
 - Forma de injeção dos repositórios e demais dependências dos casos de uso além do uso das classes abstratas como tokens.
 - Convenções finais de nomenclatura e estrutura de todos os módulos.
-- Estratégias de transação e outros detalhes de persistência ainda não definidos.
+- Assinaturas e grau de isolamento dos contratos de repositório, representação do contexto transacional e estratégias específicas de concorrência e integridade ainda serão definidos durante a implementação, conforme [database.md](./database.md).
+- Campo HTTP definitivo para o identificador estável do erro e mapeamento específico de falhas conhecidas do Prisma e de outras falhas técnicas.
 
 As decisões iniciais registradas nesta seção não afirmam que a arquitetura futura esteja implementada nem encerram as questões listadas como abertas.

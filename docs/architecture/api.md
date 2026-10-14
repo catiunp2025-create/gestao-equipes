@@ -1,5 +1,7 @@
 # API HTTP atual
 
+> Atualizado em: 2026-10-14
+
 ## Estado implementado
 
 A API está em `apps/api` e usa NestJS. O único endpoint implementado no código atual é:
@@ -23,6 +25,6 @@ Não há atualmente rotas de autenticação, usuários, atividades, categorias, 
 
 ## Contratos e funcionalidades não implementados
 
-Embora `@gestao-equipes/contracts` esteja declarado como dependência workspace, o arquivo exportado pelo pacote não existe e não há contratos consumidos pelo endpoint atual. As políticas de autenticação, autorização, erros, paginação, filtros e versionamento descritas em requisitos ou propostas continuam sem implementação HTTP correspondente.
+Embora `@gestao-equipes/contracts` esteja declarado como dependência workspace, o arquivo exportado pelo pacote não existe e não há contratos consumidos pelo endpoint atual. As políticas de autenticação, autorização, paginação, filtros e versionamento descritas em requisitos ou propostas continuam sem implementação HTTP correspondente. O padrão arquitetural futuro para erros e exceções está registrado em [backend.md](./backend.md); ele ainda não está implementado na API.
 
-Esta página registra o estado presente; formato REST por recurso, convenções de respostas e demais decisões de API permanecem para uma etapa posterior.
+Esta página registra o estado presente; formato REST por recurso, contrato HTTP definitivo de erros e demais decisões de API serão detalhados quando os endpoints correspondentes forem implementados.

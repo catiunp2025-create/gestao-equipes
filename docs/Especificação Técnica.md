@@ -5,12 +5,12 @@
 - **Versão:** 2.0
 - **Status:** Especificação consolidada
 - **Fonte primária:** Especificação Técnica v1.0, consolidada com as decisões de produto e domínio posteriores
-- **Atualizado em:** 2026-10-13
+- **Atualizado em:** 2026-10-14
 - **Nomenclatura oficial:** Atividade
 - **Backend:** NestJS + TypeScript + Prisma ORM + PostgreSQL
 - **Frontend:** React + TypeScript + Tailwind CSS + Recharts
 
-> **Nota sobre escopo técnico:** esta versão consolida o conteúdo da especificação técnica original e as decisões funcionais tomadas posteriormente. As decisões arquiteturais iniciais do backend estão registradas em [docs/architecture/backend.md](architecture/backend.md); questões ainda abertas e detalhes de implementação continuam pendentes. As estruturas técnicas apresentadas neste documento são referências iniciais, não afirmações sobre a implementação atual.
+> **Nota sobre escopo técnico:** esta versão consolida o conteúdo da especificação técnica original e as decisões funcionais tomadas posteriormente. As decisões arquiteturais iniciais do backend estão registradas em [docs/architecture/backend.md](architecture/backend.md), e os padrões futuros de persistência e transações em [docs/architecture/database.md](architecture/database.md); assinaturas e estratégias específicas continuam pendentes até a implementação. As estruturas técnicas apresentadas neste documento são referências iniciais, não afirmações sobre a implementação atual.
 
 ---
 
@@ -938,7 +938,7 @@ A arquitetura abaixo preserva a proposta da especificação original como refer�
 └───────────────────────────────┘
 ```
 
-Essa estrutura é uma visão conceitual de frontend, backend e persistência, não a arquitetura implementada. A divisão funcional inicial e seus limites estão registrados em [docs/architecture/backend.md](architecture/backend.md); decisões adicionais continuam em aberto.
+Essa estrutura é uma visão conceitual de frontend, backend e persistência, não a arquitetura implementada. A divisão funcional inicial e seus limites estão registrados em [docs/architecture/backend.md](architecture/backend.md); os padrões para futuras implementações de persistência estão em [docs/architecture/database.md](architecture/database.md).
 
 ---
 
@@ -1207,7 +1207,7 @@ model Comment {
 }
 ```
 
-> O schema acima é um modelo conceitual atualizado, não uma decisão definitiva de implementação. Relações, índices, estratégias de exclusão e detalhes de persistência serão validados na especificação arquitetural.
+> O schema acima é um modelo conceitual atualizado, não uma decisão definitiva de implementação. Relações, índices, estratégias de exclusão e detalhes de persistência serão validados durante a implementação, à luz dos padrões em [docs/architecture/database.md](architecture/database.md).
 
 ---
 
@@ -1781,7 +1781,7 @@ A API deverá possuir respostas HTTP consistentes.
 }
 ```
 
-Os contratos definitivos de erro serão definidos posteriormente.
+O padrão arquitetural para classes-base HTTP, erros específicos por módulo e identificadores estáveis está registrado em [docs/architecture/backend.md](architecture/backend.md). Esse padrão orienta implementações futuras e não está implementado ainda; o contrato HTTP definitivo para cada endpoint deverá ser documentado quando os endpoints forem definidos. A resposta deverá manter os campos acordados, como `statusCode`, `message` e `error`, e representar separadamente o identificador estável do erro quando aplicável.
 
 ---
 

@@ -1,6 +1,6 @@
 # Arquitetura
 
-> Atualizado em: 2026-10-13
+> Atualizado em: 2026-10-14
 
 ## Objetivo
 
@@ -30,7 +30,7 @@ Requisitos e conceitos de domínio podem descrever o produto desejado sem que su
 - [overview.md](./overview.md): visão geral do monorepo e estado das aplicações.
 - [backend.md](./backend.md): estrutura NestJS e estado implementado, decisões iniciais para o backend e questões ainda em aberto.
 - [frontend.md](./frontend.md): scaffold web atual e propostas anteriormente registradas.
-- [database.md](./database.md): provider Prisma, schema e configuração existente.
+- [database.md](./database.md): provider Prisma, schema e configuração existente, além dos padrões futuros de persistência e transações.
 - [api.md](./api.md): endpoint e inicialização HTTP atuais.
 
 ## Estado arquitetural consolidado
@@ -53,18 +53,18 @@ Requisitos e conceitos de domínio podem descrever o produto desejado sem que su
 
 ### Decisões em aberto
 
-- política de dependências e comunicação entre módulos, convenções finais e detalhes de persistência do backend;
+- política de dependências e comunicação entre módulos e convenções finais; assinaturas e estratégias específicas de persistência permanecem por definir conforme [database.md](./database.md);
 - contratos HTTP e compartilhamento de tipos;
 - decisões de produto pendentes nos documentos de requisitos e domínio.
 
 ## Registro da arquitetura atual
 
-Os documentos distinguem o que existe hoje das decisões que orientarão implementações futuras. Propostas anteriores são tratadas como referências, não como decisões já implementadas; as decisões iniciais de arquitetura do backend estão registradas em [backend.md](./backend.md).
+Os documentos distinguem o que existe hoje das decisões que orientarão implementações futuras. Propostas anteriores são tratadas como referências, não como decisões já implementadas; as decisões iniciais do backend estão em [backend.md](./backend.md), e os padrões de persistência e transações para implementações futuras estão em [database.md](./database.md).
 
 ## Leitura recomendada
 
 - Para a estrutura geral, consulte [overview.md](./overview.md).
 - Para o backend, leia [backend.md](./backend.md).
 - Para a camada web, consulte [frontend.md](./frontend.md).
-- Para persistência, leia [database.md](./database.md).
+- Para o estado atual do banco e os padrões futuros de persistência e transações, leia [database.md](./database.md).
 - Para o endpoint e inicialização HTTP, consulte [api.md](./api.md).
