@@ -1,4 +1,4 @@
-import { HttpNotFoundError } from '../../common/errors/base/HttpNotFoundError';
+import { HttpNotFoundError } from '../../common/errors/base/HttpNotFoundError.js';
 
 const message = 'Usuário não encontrado';
 const error = 'UserNotFound';

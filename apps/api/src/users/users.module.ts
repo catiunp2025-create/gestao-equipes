@@ -4,6 +4,8 @@ import { UserPrismaRepository } from './users.prismaRepository.js';
 import { GetUserUseCase } from './usecases/GetUserUseCase.js';
 import { UserRepository } from './users.repository.js';
 import { DatabaseModule } from '../database/database.module.js';
+import { UpdateUserUseCase } from './usecases/UpdateUserUseCase.js';
+import { UpdateActiveStatusUseCase } from './usecases/UpdateActiveStatusUseCase.js';
 
 @Module({
   imports: [DatabaseModule],
@@ -14,6 +16,8 @@ import { DatabaseModule } from '../database/database.module.js';
       useClass: UserPrismaRepository,
     },
     GetUserUseCase,
+    UpdateUserUseCase,
+    UpdateActiveStatusUseCase,
   ],
   exports: [GetUserUseCase],
 })
