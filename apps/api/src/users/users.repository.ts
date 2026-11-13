@@ -19,6 +19,12 @@ export interface UpdateActiveStatus {
   active: boolean;
 }
 
+export interface CreateUser {
+  name: string;
+  email: string;
+  password: string;
+}
+
 export abstract class UserRepository {
   abstract findById({ id }: findById): Promise<User | null>;
   abstract update({ id, name, email }: updateUser): Promise<User>;
@@ -27,4 +33,6 @@ export abstract class UserRepository {
     id,
     active,
   }: UpdateActiveStatus): Promise<User>;
+  abstract listAllUsers(): Promise<User[]>;
+  abstract createUser({ name, email, password }: CreateUser): Promise<User>;
 }

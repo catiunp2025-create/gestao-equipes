@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
+  CreateUser,
   findByEmail,
   findById,
   UpdateActiveStatus,
@@ -25,13 +26,20 @@ export class UserPrismaRepository implements UserRepository {
     return this.prisma.user.update({ where: { id }, data: { name, email } });
   }
 
-  async updateActiveStatus({
-    id,
-    active,
-  }: UpdateActiveStatus): Promise<User> {
+  async updateActiveStatus({ id, active }: UpdateActiveStatus): Promise<User> {
     return this.prisma.user.update({
       where: { id },
       data: { active },
+    });
+  }
+
+  async listAllUsers(): Promise<User[]> {
+    return this.prisma.user.findMany();
+  }
+
+  async createUser({ name, email, password }: CreateUser): Promise<User> {
+    return this.prisma.user.create({
+      data: { name, email, password },
     });
   }
 }
